@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Interoperabilité</title>
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
+        <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen" /> 
+
+    </head>
+
+    <body>
+        <div th:replace="/fragments/header :: header"> This header content is going to be replaced.</div>
+        <div class="container">
+            <div class="row">
+                <!--<div class="col-2" layout:fragment="sidebar">
+                    <h1>This is the layout's sidebar</h1>
+                    <p>This content will be replaced if the page
+                        using the layout also defines a layout:fragment="sidebar" segment.</p>
+                </div>-->
+                
+                
+
+                <div class="col" layout:fragment="content">
+                    <h1>This is the Layout's main section</h1>
+                    <p>This content will be replaced if the page
+                        using the layout also defines a layout:fragment="content" segment. </p>
+                </div>
+            </div>
+        </div>
+        <footer th:insert="/fragments/footer :: footer" class="footer">
+            This content will remain, but other content will be inserted after it.
+        </footer>
+    </body>
+
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+
+</html>
