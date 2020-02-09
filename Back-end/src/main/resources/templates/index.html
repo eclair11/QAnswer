@@ -1,57 +1,46 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
 
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Index</title>
-    </head>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Index</title>
+</head>
 
-    <body>
-        test
-        <div class="container">
-            <div class="row">
-
-                <div class="col" layout:fragment="content">
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col" layout:fragment="content">
+                <br />
+                <h1>Rechercher des informations</h1>
+                <form th:action="@{/demande}" method="post">
+                    <input type="text" name="pseudo" placeholder="Déclinez votre identité" />
+                    <input type="text" name="sujet" placeholder="Sujet de votre recherche" />
+                    <input type="text" name="question" placeholder="Rentrez votre question" />
+                    <input type="submit" value="Valider">
+                </form>
                 </br>
-                    <h1>Rechercher des informations</h1>
-
-                    <form th:action="@{/addDemande}" method="post">
-                        <input type="text" name="pseudo" placeholder="Déclinez votre identité" />
-                        <input type="text" name="sujet" placeholder="Sujet de votre recherche" />
-                        <input type="text" name="question" placeholder="Rentrez votre question" />
-                        <input type="submit" value="Valider">
-                    </form>
-
-                    </br>
-
-                    <h1>Liste des demandes</h1>
-
-                    <table class="table table-hover table-dark">
-                        <thead>
-                          <tr>
+                <h1>Liste des demandes</h1>
+                <table class="table table-hover table-dark">
+                    <thead>
+                        <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Pseudo</th>
                             <th scope="col">Sujet</th>
                             <th scope="col">Question</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr  th:each="d : ${afficheDemande}">
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="d : ${afficheDemande}">
                             <th scope="row" th:text="${d.id}"></th>
                             <td th:text="${d.pseudo}"></td>
                             <td th:text="${d.sujet}"></td>
                             <td th:text="${d.question}">@</td>
-                          </tr>
-                  
-                        </tbody>
-                      </table>
-
-                </div>
-
-
-
+                        </tr>
+                    </tbody>
+                </table>
+                <div th:text="${answer}"></div>
             </div>
         </div>
-        </div>
-    </body>
+    </div>
+</body>
 
 </html>

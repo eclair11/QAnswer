@@ -1,0 +1,27 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Parser</title>
+</head>
+
+<body>
+    <div class="container">
+        <div layout:fragment="content">
+            <h1>Importation des fichiers PDF ou CSV</h1>
+            <form method="POST" th:action="@{/addfiles}" th:object="${upload}" enctype="multipart/form-data">
+                <span>Choisir les fichiers à importer :</span>
+                <input style="width: 320px" multiple accept=".pdf,.csv" type="file" th:field="*{files}">
+                <button type="submit">Valider</button>
+            </form>
+            <h1>Importation d'une page HTML</h1>
+            <form method="POST" th:action="@{/addlinks}" th:object="${upload}">
+                <span>Saisir le lien de la page HTML à importer :</span>
+                <input style="width: 320px" type="text" th:field="*{link}">
+                <button type="submit">Valider</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
