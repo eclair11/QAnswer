@@ -44,11 +44,11 @@ import sem8.intero.proj.model.Upload;
 public class IndexController {
 
     private static final String URL_LOGIN = "http://qanswer-core1.univ-st-etienne.fr/api/user/signin";
-    private static final String URL_QUEST = "http://qanswer-core1.univ-st-etienne.fr/api/qa/full";
+    private static final String URL_QUEST = "http://qanswer-core1.univ-st-etienne.fr/api/qa/fullInterpretation";
     private static final String USER = "QNico";
     private static final String PASS = "J*M'isuMdR*20";
-    private static final String LANG = "en";
-    private static final String DATA = "wikidata";
+    private static final String LANG = "fr";
+    //private static final String DATA = "wikidata";
 
     @Autowired
     public DemandeRepository DemandeRepo;
@@ -140,15 +140,15 @@ public class IndexController {
     private ArrayList<Object> getAnswer(RestTemplate restTemplate, HttpHeaders headers, Token token, String question) {
         ArrayList<Object> answers = new ArrayList<>();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", token.getTokenType() + token.getAccessToken());
+        headers.add("Authorization", token.getTokenType() + " " + token.getAccessToken());
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_QUEST).queryParam("question", question)
-                .queryParam("lang", LANG).queryParam("kb", DATA);
+                .queryParam("lang", LANG);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         HttpEntity<String> request = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
         JSONObject body = new JSONObject(request.getBody());
         JSONArray context = body.getJSONArray("qaContexts");
         for (int i = 0; i < context.length(); i++) {
-            Object answer = context.getJSONObject(i).get("label");
+            Object answer = context.getJSONObject(i).get("literal");
             answers.add(answer);
         }
         return answers;
