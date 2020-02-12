@@ -47,7 +47,7 @@ public class IndexController {
     private static final String URL_QUEST = "http://qanswer-core1.univ-st-etienne.fr/api/qa/fullInterpretation";
     private static final String USER = "QNico";
     private static final String PASS = "J*M'isuMdR*20";
-    private static final String LANG = "fr";
+    private static final String LANG = "en";
     //private static final String DATA = "wikidata";
 
     @Autowired
@@ -146,11 +146,30 @@ public class IndexController {
         HttpEntity<?> entity = new HttpEntity<>(headers);
         HttpEntity<String> request = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
         JSONObject body = new JSONObject(request.getBody());
+        Object answer;
+        answer = body.getString("interpretation");
+        answers.add(answer);
+
         JSONArray context = body.getJSONArray("qaContexts");
+        if(!context.getJSONObject(0).getString("label").isEmpty()){
+            answer = context.getJSONObject(0).getString("label");
+            answers.add(answer);
+
+        }
+
+        if(!context.getJSONObject(0).optJSONArray("images").isNull(0)){
+            Object image = context.getJSONObject(0).optJSONArray("images").get(0);
+            answers.add(image);
+        }
+
+        /*   
         for (int i = 0; i < context.length(); i++) {
-            Object answer = context.getJSONObject(i).get("literal");
+            answer = context.get(i).toString();
             answers.add(answer);
         }
+        */
+
+
         return answers;
     }
 
