@@ -173,4 +173,10 @@ public class IndexController {
         return answers;
     }
 
+    @RequestMapping("/recherche")
+    public String recherche(Model m) {
+
+        return "recherche";
+    }
+
 }
