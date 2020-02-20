@@ -27,6 +27,7 @@
                     <input type="text" name="pseudo" placeholder="Déclinez votre identité" />
                     <input type="text" name="sujet" placeholder="Sujet de votre recherche" />
                     <input type="text" id="qa" name="question" placeholder="Rentrez votre question" />
+                    <input type="text" id="lang" name="langue" placeholder="Langage" />
                     <input type="submit" value="Valider">
                 </form>
                 </br>
@@ -42,6 +43,7 @@
                             <th scope="col">Pseudo</th>
                             <th scope="col">Sujet</th>
                             <th scope="col">Question</th>
+                            <th scope="col">Langue</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,10 +52,12 @@
                             <td th:text="${d.pseudo}"></td>
                             <td th:text="${d.sujet}"></td>
                             <td th:text="${d.question}">@</td>
+                            <td th:text="${d.langue}">@</td>
                         </tr>
                     </tbody>
                 </table>
-        -->
+            -->
+        
                 <div th:if="${answer != empty}" th:src="${answer}"></div>
 
                 <tr th:each="continent : ${answer}">

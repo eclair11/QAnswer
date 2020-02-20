@@ -4,32 +4,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>API Test</title>
+  <title>Recherche sur Wikidata (Version Javascript)</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
-
 </head>
 
 <body>
 
-
-  <form action="" onsubmit=" return getToken()" method="post">
-    <div class="form-group">
-      <input type="text" id="question" placeholder="Rentrez votre question" />
-      <input type="text" id="lang" placeholder="en" />
-      <input id="butSubmit" type="button" value="ici!!!" />
+  <main role="main">
+    <section class="jumbotron text-center bg-info">
+      <div class="container">
+        <h1>Recherche sur Wikidata (Version Javascript)</h1>
+        <form action="" onsubmit=" return getToken()" method="post">
+          <div class="form-group">
+            <input type="text" id="question" placeholder="Rentrez votre question" />
+            <input type="text" id="lang" placeholder="en" />
+            <input id="butSubmit" type="button" value="ici!!!" />
+          </div>
+        </form>
+      </div>
+    </section>
+    <div class="jumbotron text-left bg-light">
+      <div class="container">
+        <div id="riri"></div>
+      </div>
     </div>
-  </form>
-
-  <div id="riri"></div>
+  </main>
 
 </body>
 
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-
 <script type="text/javascript">
-
 
   function getToken() {
     return new Promise((resolve, reject) => {
@@ -104,11 +110,19 @@
               '<br>' + "Image = ".toUpperCase().bold() + '<img src="' + img + '" alt="">' + '<br>'
           }
 
+          var link = value['qaContexts'][0].links
+          if (link['wikidata'] != null || link['wikipedia'] != null) {
+            document.getElementById("riri").innerHTML +=
+              "Liens = ".toUpperCase().bold() +
+              '<a href=' + value["qaContexts"][0].links['wikidata'] + '>Wikidata</a>' + ' / ' +
+              '<a href=' + value["qaContexts"][0].links['wikipedia'] + '>Wikipedia</a>'
+          }
+
+
         })
       });
     });
   });
-
 
 </script>
 

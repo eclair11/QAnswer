@@ -69,7 +69,7 @@ public class IndexController {
     @PostMapping("/demande")
     public String demande(Model m, Demande d, RedirectAttributes redirect) {
         DemandeRepo.save(d);
-        ArrayList<Object> answer = sendQuestion(d.getQuestion());
+        ArrayList<Object> answer = sendQuestion(d.getQuestion(), d.getLangue());
         redirect.addFlashAttribute("answer", answer);
         return "redirect:/";
     }
@@ -121,11 +121,12 @@ public class IndexController {
         return readValues.readAll();
     }
 
-    private ArrayList<Object> sendQuestion(String question) {
+    private ArrayList<Object> sendQuestion(String question, String langue) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         Token token = getToken(restTemplate, headers);
-        return getAnswer(restTemplate, headers, token, question);
+        
+        return getAnswer(restTemplate, headers, token, question, langue);
     }
 
     private Token getToken(RestTemplate restTemplate, HttpHeaders headers) {
@@ -137,12 +138,11 @@ public class IndexController {
         return restTemplate.postForObject(URL_LOGIN, entity, Token.class);
     }
 
-    private ArrayList<Object> getAnswer(RestTemplate restTemplate, HttpHeaders headers, Token token, String question) {
+    private ArrayList<Object> getAnswer(RestTemplate restTemplate, HttpHeaders headers, Token token, String question, String langue) {
         ArrayList<Object> answers = new ArrayList<>();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization", token.getTokenType() + " " + token.getAccessToken());
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_QUEST).queryParam("question", question)
-                .queryParam("lang", LANG);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_QUEST).queryParam("question", question).queryParam("lang", langue);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         HttpEntity<String> request = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
         JSONObject body = new JSONObject(request.getBody());
@@ -154,7 +154,6 @@ public class IndexController {
         if(!context.getJSONObject(0).getString("label").isEmpty()){
             answer = context.getJSONObject(0).getString("label");
             answers.add(answer);
-
         }
 
         if(!context.getJSONObject(0).optJSONArray("images").isNull(0)){

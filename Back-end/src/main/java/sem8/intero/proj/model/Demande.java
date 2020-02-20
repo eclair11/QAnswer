@@ -25,6 +25,8 @@ public class Demande {
 
     private String question;
 
+    private String langue;
+
     @Temporal(TemporalType.DATE)
     private Date dateQuestion = new Date();
 
@@ -69,6 +71,14 @@ public class Demande {
 
     public void setDateQuestion(Date dateQuestion) {
         this.dateQuestion = dateQuestion;
+    }
+
+    public String getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String langue) {
+        this.langue = langue;
     }
 
 }
