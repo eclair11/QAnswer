@@ -169,10 +169,10 @@ public class IndexController {
         }
         */
 
-
         return answers;
     }
 
+    /* API Version Javascript */
     @RequestMapping("/recherche")
     public String recherche(Model m) {
 

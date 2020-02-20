@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>API Test</title>
-  <link rel="stylesheet" href="/static/css/bootstrap.min.js">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
 
 </head>
 
@@ -15,7 +15,7 @@
   <form action="" onsubmit=" return getToken()" method="post">
     <div class="form-group">
       <input type="text" id="question" placeholder="Rentrez votre question" />
-      <input type="text" id="lang" placeholder="en"/>
+      <input type="text" id="lang" placeholder="en" />
       <input id="butSubmit" type="button" value="ici!!!" />
     </div>
   </form>
@@ -85,15 +85,25 @@
         var lang = document.getElementById("lang").value;
         qA(value['accessToken'], question, lang).then((value) => { // value is response != value of token
           //console.log(value['interpretation'])
+          var img = value["qaContexts"][0].images;
           document.getElementById("riri").innerHTML =
             "Question =       ".toUpperCase().bold() + value['question'] + '<br>' +
-            "Interpretation = ".toUpperCase().bold() + value['interpretation'] + '<br>' +
-            "Contexte =       ".toUpperCase().bold()
-          value['qaContexts'].forEach(a => {
-            document.getElementById("riri").innerHTML += a.literal + " | "
-          })
+            "Interpretation = ".toUpperCase().bold() + value['interpretation'] + '<br>'
 
-          //  response.qaContexts[0].literal
+          /* On teste s'il existe des 'literal' */
+          if (value['qaContexts'][0].literal != null) {
+            document.getElementById("riri").innerHTML += "Contexte =       ".toUpperCase().bold()
+            value['qaContexts'].forEach(a => {
+              document.getElementById("riri").innerHTML += a.literal + " | "
+            })
+          }
+
+          /* On teste s'il existe des 'images' */
+          if (Array.isArray(img) && img.length) {
+            document.getElementById("riri").innerHTML +=
+              '<br>' + "Image = ".toUpperCase().bold() + '<img src="' + img + '" alt="">' + '<br>'
+          }
+
         })
       });
     });
