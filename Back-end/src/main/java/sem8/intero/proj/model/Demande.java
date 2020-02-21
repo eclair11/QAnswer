@@ -20,11 +20,8 @@ public class Demande {
     private Long id;
 
     private String pseudo;
-
     private String sujet;
-
     private String question;
-
     private String langue;
 
     @Temporal(TemporalType.DATE)

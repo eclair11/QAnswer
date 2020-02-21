@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class Upload {
 
     private MultipartFile[] files;
-
     private String link;
 
     public Upload() {

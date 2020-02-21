@@ -6,7 +6,6 @@ package sem8.intero.proj.model;
 public class Token {
 
     private String accessToken;
-
     private String tokenType;
 
     public Token() {
