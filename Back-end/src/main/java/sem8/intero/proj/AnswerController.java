@@ -17,9 +17,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import sem8.intero.proj.Repository.DemandeRepository;
 import sem8.intero.proj.model.Demande;
 import sem8.intero.proj.model.Token;
-import sem8.intero.proj.repository.DemandeRepository;
 
 /**
  * AnswerController
@@ -88,11 +88,29 @@ public class AnswerController {
             int size = context.getJSONObject(i).getJSONArray("images").length();
             if (size > 0) {
                 for (int j = 0; j < size; j++) {
-                    Object image = context.getJSONObject(i).getJSONArray("images").get(j);
+                    Object image = context.getJSONObject(i).getJSONArray("images").get(0);
                     answers.add(image);
                 }
             }
+
+            //Ensemble des liens
+            JSONObject links = context.getJSONObject(i).getJSONObject("links");
+            Object url = context.getJSONObject(i).get("uri");
+            if (!url.equals(null)) {
+                if (links.has("wikipedia")) {
+                    String linksWikipedia = links.getString("wikipedia");
+                    answers.add(linksWikipedia);
+                }
+                if (links.has("wikidata")) {
+                    String linksWikidata = links.getString("wikidata");
+                    answers.add(linksWikidata);
+                }
+            }
+
         }
+
+
+
         return answers;
     }
 

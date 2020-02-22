@@ -1,19 +1,19 @@
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<td xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Index</title>
 
     <script th:inline="javascript">
-                  
-        function toto(){
+
+        function toto() {
             var question = document.getElementById('qa').value;
             document.getElementById('test').textContent = question;
             //return false;
         };
-        
-       
-     </script>
+
+
+    </script>
 
 </head>
 
@@ -22,17 +22,19 @@
         <div class="row">
             <div class="col" layout:fragment="content">
                 <br />
-                <h1>Rechercher des informations</h1>
+                <h1>Recherche sur Wikidata (Version Spring)</h1>
                 <form onsubmit="return toto()" th:action="@{/demande}" method="post">
-                    <input type="text" name="pseudo" placeholder="Déclinez votre identité" />
-                    <input type="text" name="sujet" placeholder="Sujet de votre recherche" />
+                    <!--
+                        <input type="text" name="pseudo" placeholder="Déclinez votre identité" />
+                        <input type="text" name="sujet" placeholder="Sujet de votre recherche" />
+                    -->
                     <input type="text" id="qa" name="question" placeholder="Rentrez votre question" />
                     <input type="text" id="lang" name="langue" placeholder="Langage" />
                     <input type="submit" value="Valider">
                 </form>
                 </br>
 
-                <span id="test" ></span>
+                <span id="test"></span>
 
                 <!--
                 <h1>Liste des demandes</h1>
@@ -57,19 +59,28 @@
                     </tbody>
                 </table>
             -->
-        
+
                 <div th:if="${answer != empty}" th:src="${answer}"></div>
 
                 <tr th:each="continent : ${answer}">
-                   <td> 
-                        <span th:if="${#strings.contains(continent, 'http')}">
+                    <td>
+                        <span th:if="${#strings.contains(continent, 'http')} and ${#strings.contains(continent, 'FilePath')}">
                             <span><b>Image : </b></span>
-                            <img th:attr="src=${continent}"> </img>
+                            <img th:attr="src=${continent}" th:style=" 'width:300px;' "> </img>
                         </span>
-                        <span th:unless="${#strings.contains(continent, 'http')}">
+                        <span th:unless="${#strings.contains(continent, 'http')} or ${#strings.contains(continent, 'FilePath')}">
                             <span><b>Référence : </b></span>
                             <p th:text="${continent}" ></p>
+                        </span><br>
+                        <span th:if="${#strings.contains(continent, 'http')} and ${#strings.contains(continent, 'entity')}">
+                            <span><b>Lien : </b></span>
+                            <a th:href="${continent}" >wikidata</a>
                         </span>
+                        <span th:if="${#strings.contains(continent, 'https')} and ${#strings.contains(continent, 'wikipedia')}">
+                            <span><b>Lien : </b></span>
+                            <a th:href="${continent}" >wikipedia</a>
+                        </span>
+                        
                     </td>
                 </tr>
 
@@ -81,4 +92,4 @@
 
 
 
-</html>
+</td>

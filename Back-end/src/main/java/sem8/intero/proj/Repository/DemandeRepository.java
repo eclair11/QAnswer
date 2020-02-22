@@ -1,4 +1,4 @@
-package sem8.intero.proj.repository;
+package sem8.intero.proj.Repository;
 
 import java.util.List;
 
