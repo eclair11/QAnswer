@@ -1,4 +1,4 @@
-package sem8.intero.proj.Repository;
+package sem8.intero.proj.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

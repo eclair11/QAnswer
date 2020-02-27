@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import sem8.intero.proj.Repository.DemandeRepository;
+import sem8.intero.proj.repository.DemandeRepository;
 import sem8.intero.proj.model.Demande;
 import sem8.intero.proj.model.Token;
 
