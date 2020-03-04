@@ -1,20 +1,15 @@
-<td xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Index</title>
-
     <script th:inline="javascript">
-
         function toto() {
             var question = document.getElementById('qa').value;
             document.getElementById('test').textContent = question;
             //return false;
         };
-
-
     </script>
-
 </head>
 
 <body>
@@ -58,7 +53,7 @@
                         </tr>
                     </tbody>
                 </table>
-            -->
+                -->
 
                 <div th:if="${answer != empty}" th:src="${answer}"></div>
 
@@ -90,6 +85,4 @@
     
 </body>
 
-
-
-</td>
+</html>

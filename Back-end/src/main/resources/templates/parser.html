@@ -8,18 +8,22 @@
 <body>
     <div class="container">
         <div layout:fragment="content">
-            <h1>Importation des fichiers PDF ou CSV</h1>
-            <form method="POST" th:action="@{/addfiles}" th:object="${upload}" enctype="multipart/form-data">
-                <span>Choisir les fichiers à importer :</span>
-                <input style="width: 320px" multiple accept=".pdf,.csv" type="file" th:field="*{files}">
-                <button type="submit">Valider</button>
-            </form>
-            <h1>Importation d'une page HTML</h1>
-            <form method="POST" th:action="@{/addlinks}" th:object="${upload}">
-                <span>Saisir le lien de la page HTML à importer :</span>
-                <input style="width: 320px" type="text" th:field="*{link}">
-                <button type="submit">Valider</button>
-            </form>
+            <div class="text-center py-5">
+                <h2>Sélectionnez les fichiers CSV à importer</h2>
+                <form method="POST" th:action="@{/addfiles}" th:object="${upload}" enctype="multipart/form-data">
+                    <input style="width: 320px" multiple accept=".csv" type="file" th:field="*{files}">
+                    <button type="submit">Valider</button>
+                </form>
+                <div th:each="result : ${results}">[[ ${result} ]]</div>
+            </div>
+            <div class="text-center py-5">
+                <h2>Ajoutez le lien de la page HTML à récupérer</h2>
+                <form method="POST" th:action="@{/addlinks}" th:object="${upload}">
+                    <input style="width: 320px" type="text" th:field="*{link}">
+                    <button type="submit">Valider</button>
+                </form>
+                <div>[[ ${status} ]]</div>
+            </div>
         </div>
     </div>
 </body>
