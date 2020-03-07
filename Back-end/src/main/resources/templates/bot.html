@@ -1,0 +1,37 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bot</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col" layout:fragment="content">
+                <br />
+                <h1>Insertion dans la Wikidata</h1>
+                <form th:action="@{/botinsert}" method="post">
+                    
+                    <input type="text" name="label" placeholder="Insérez votre label" />
+                    
+                    <input type="text" name="description" placeholder="Description" />                
+                    
+                    <select name="lang" />
+                        <option th:value="'en'" th:text="en"></option>
+                        <option th:value="'fr'" th:text="fr"></option>
+                    </select>
+
+                    <input type="submit" value="Valider">
+                </form>
+                </br> 
+                
+                <span th:text="${reponse}" ></span>
+                
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>

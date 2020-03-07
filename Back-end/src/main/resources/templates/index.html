@@ -24,7 +24,16 @@
                         <input type="text" name="sujet" placeholder="Sujet de votre recherche" />
                     -->
                     <input type="text" id="qa" name="question" placeholder="Rentrez votre question" />
-                    <input type="text" id="lang" name="langue" placeholder="Langage" />
+                    <!--
+                        <input type="text" id="lang" name="langue" placeholder="Langage" />
+                    -->
+
+                    <select name="langue" />
+                        <option th:value="'en'" th:text="anglais"></option>
+                        <option th:value="'fr'" th:text="français"></option>
+                        <option th:value="'it'" th:text="italien"></option>
+                    </select>
+
                     <input type="submit" value="Valider">
                 </form>
                 </br>

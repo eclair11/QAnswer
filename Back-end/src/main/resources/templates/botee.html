@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Recherche sur Wikidata (Version Javascript)</title>
+    <title>Insertion du bot</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 
@@ -21,26 +21,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Recherche Spring</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/recherche">Recherche Javascript<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/recherche">Recherche Javascript</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="parser">Parser CSV/HTML</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="bot">Bot Wikidata</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="bot">Bot Wikidata<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <main role="main">
-        <section class="jumbotron text-center bg-info">
+        <section class="jumbotron text-center bg-danger">
             <div class="container">
-                <h1>Recherche sur Wikidata (Version Javascript)</h1>
+                <h1>Insérer vos données dans Wikidata</h1>
                 <form action="" onsubmit=" return getToken()" method="post">
                     <div class="form-group">
-                        <input type="text" id="question" placeholder="Rentrez votre question" />
+                        <input type="text" id="question" placeholder="Taper la donnée à ajouter" />
                         <input type="text" id="lang" placeholder="en" />
                         <input id="butSubmit" type="button" value="ici!!!" />
                     </div>

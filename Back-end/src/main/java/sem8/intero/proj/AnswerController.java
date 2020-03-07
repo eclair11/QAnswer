@@ -1,5 +1,6 @@
 package sem8.intero.proj;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
+import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
-import sem8.intero.proj.repository.DemandeRepository;
+import sem8.intero.proj.Repository.BotRepository;
+import sem8.intero.proj.Repository.DemandeRepository;
 import sem8.intero.proj.model.Demande;
 import sem8.intero.proj.model.Token;
+import sem8.intero.proj.model.Bot;
+import sem8.intero.proj.model.BotInsert;
 
 /**
  * AnswerController
@@ -34,6 +40,9 @@ public class AnswerController {
 
     @Autowired
     public DemandeRepository DemandeRepo;
+
+    @Autowired
+    public BotRepository BotRepo;
 
     @RequestMapping("/")
     public String index(Model m) {
@@ -86,14 +95,30 @@ public class AnswerController {
                 answers.add(literal);
             }
             int size = context.getJSONObject(i).getJSONArray("images").length();
+
+            ArrayList<String> memoire = new ArrayList<>();
+            boolean imagePresente = false;
+
             if (size > 0) {
                 for (int j = 0; j < size; j++) {
+
                     Object image = context.getJSONObject(i).getJSONArray("images").get(0);
-                    answers.add(image);
+
+                    for (String string : memoire) {
+                        if (string.equals(image.toString())) {
+                            imagePresente = true;
+                        }
+                    }
+
+                    if (!imagePresente) {
+                        answers.add(image);
+                        memoire.add(image.toString());
+                    }
+                    imagePresente = false;
                 }
             }
 
-            //Ensemble des liens
+            // Ensemble des liens
             JSONObject links = context.getJSONObject(i).getJSONObject("links");
             Object url = context.getJSONObject(i).get("uri");
             if (!url.equals(null)) {
@@ -109,8 +134,6 @@ public class AnswerController {
 
         }
 
-
-
         return answers;
     }
 
@@ -118,6 +141,43 @@ public class AnswerController {
     @RequestMapping("/recherche")
     public String recherche(Model m) {
         return "recherche";
+    }
+
+    @RequestMapping("/bot")
+    public String bote(Model m, String reponse) {
+
+        m.addAttribute("bot", new Bot());
+        if (m.getAttribute("bool") != null && m.getAttribute("bool").equals("true")) {
+            m.addAttribute("reponse", "");
+            
+        }
+
+        return "bot";
+
+    }
+
+    @PostMapping("/botinsert")
+    public String botinsert(Model m, Bot b) throws MediaWikiApiErrorException, IOException, LoginFailedException {
+        /*
+         * BotRepo.save(b); BotInsert.botot(null, null, null);
+         */
+        String label = b.getLabel();
+        String description = b.getDescription();
+        String lang = b.getLang();
+
+        System.out.println(b.getLabel());
+        System.out.println(b.getDescription());
+        System.out.println(b.getLang());
+
+        String reponse;
+
+        // Il faut vérifier avant si ces valeurs existent
+        reponse = BotInsert.botot(label, description, lang);
+
+        m.addAttribute("reponse", reponse);
+        m.addAttribute("bool", "true");
+
+        return "bot";
     }
 
 }

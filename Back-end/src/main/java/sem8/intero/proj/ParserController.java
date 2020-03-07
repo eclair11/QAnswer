@@ -24,11 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import sem8.intero.proj.Repository.EnterpriseRepository;
+import sem8.intero.proj.Repository.TurnoverRepository;
 import sem8.intero.proj.model.Enterprise;
 import sem8.intero.proj.model.Turnover;
 import sem8.intero.proj.model.Upload;
-import sem8.intero.proj.repository.EnterpriseRepository;
-import sem8.intero.proj.repository.TurnoverRepository;
 
 /**
  * ParserController
