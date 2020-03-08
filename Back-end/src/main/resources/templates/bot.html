@@ -10,28 +10,82 @@
         <div class="row">
             <div class="col" layout:fragment="content">
                 <br />
+
+                <!-- Formulaire d'insertion -->
                 <h1>Insertion dans la Wikidata</h1>
                 <form th:action="@{/botinsert}" method="post">
-                    
+
                     <input type="text" name="label" placeholder="Insérez votre label" />
-                    
-                    <input type="text" name="description" placeholder="Description" />                
-                    
+
+                    <input type="text" name="description" placeholder="Description" />
+
                     <select name="lang" />
-                        <option th:value="'en'" th:text="en"></option>
-                        <option th:value="'fr'" th:text="fr"></option>
+                    <option th:value="'en'" th:text="Anglais"></option>
+                    <option th:value="'fr'" th:text="Français"></option>
                     </select>
 
                     <input type="submit" value="Valider">
                 </form>
-                </br> 
-                
-                <span th:text="${reponse}" ></span>
-                
+                </br>
+
+                <span th:text="${reponseInsert}"></span>
+
+                <!-- Formulaire de mise à jour -->
+                <br />
+                <h1>Mise à jour dans la Wikidata</h1>
+                <form th:action="@{/botupdate}" method="post">
+
+                    <input type="text" name="reference" placeholder="Label de l'entité référente" />
+
+                    <input type="text" name="label" placeholder="Nouveau label" />
+
+                    <input type="text" name="description" placeholder="Nouvelle description" />
+
+                    <select name="lang" />
+                    <option th:value="'en'" th:text="Anglais"></option>
+                    <option th:value="'fr'" th:text="Français"></option>
+                    </select>
+
+                    <input type="submit" value="Valider">
+                </form>
+                </br>
+
+                <span th:text="${reponseUpdate}"></span>
+
+                <!-- Formulaire de transcription -->
+                <br />
+                <h1>Transcription code et label</h1>
+                <p>
+                    <span>Instructions :</span>
+                    </br><span>&nbsp; &nbsp; - [Q51] - &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [français] - [Code] =>
+                        'Saint-Étienne + description relative'</span>
+                    </br><span>&nbsp; &nbsp; - [Super Radis] - [français] - [Label] => 'Q257'</span>
+                </p>
+
+                <form th:action="@{/bottranscription}" method="post">
+
+                    <input type="text" name="label" placeholder="Donnée à transcrire" />
+
+                    <select name="lang" />
+                        <option th:value="'en'" th:text="Anglais"></option>
+                        <option th:value="'fr'" th:text="Français"></option>
+                    </select>
+
+                    <select name="transcription" />
+                        <option th:value="'false'" th:text="Code"></option>
+                        <option th:value="'true'" th:text="Label"></option>
+                    </select>
+
+                    <input type="submit" value="Valider">
+                </form>
+                </br>
+
+                <span th:text="${reponseTranscription}"></span>
+
             </div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

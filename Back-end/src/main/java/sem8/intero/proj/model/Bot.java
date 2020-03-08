@@ -19,6 +19,11 @@ public class Bot {
     private String label;
     private String description;
     private String alias;
+
+    private String code;
+    private String reference; // utilisé pour l'update du Bot Wikidata
+
+    private boolean transcription;  //0 -> Code -> Infos / 1 -> Label -> Code
     private boolean type; //0 -> Insertion / 1 -> Modification
 
     public Bot() {
@@ -62,6 +67,38 @@ public class Bot {
 
     public void setType(boolean type) {
         this.type = type;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public boolean isTranscription() {
+        return transcription;
+    }
+
+    public void setTranscription(boolean transcription) {
+        this.transcription = transcription;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
 }
