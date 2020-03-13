@@ -78,7 +78,7 @@ public class BotInsert {
     }
 
     /* Fonction principale de l'insertion de données par le Bot QAnswer/Wikidata */
-    public static String botot(String label, String description, String lang)
+    public static String insertEntiteBot(String label, String description, String lang)
             throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
         ApiConnection con = connexion();
@@ -121,6 +121,7 @@ public class BotInsert {
 
     }
 
+    /* Retourne 'true' si une entité est présente, 'false' sinon */
     public static boolean estEntitePresente(String label) throws LoginFailedException, MediaWikiApiErrorException {
 
         /* Connexion à la base et instanciation des objets WikiFetcher et WikiEditor */
@@ -221,6 +222,27 @@ public class BotInsert {
             }
 
         }
+
+    }
+
+    /* Retourne une proporiete en fonction d'un code de type 'P163' */
+    public static String infoPropiete(String propriete) throws MediaWikiApiErrorException, LoginFailedException {
+
+        ApiConnection con = connexion();
+        WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
+        WikibaseDataEditor wbde = new WikibaseDataEditor(con, siteIri);
+
+        /* Récupération des informations des propriétés */
+        PropertyDocument propertyTravaille = (PropertyDocument) wbdf.getEntityDocument("P163");
+        System.out.println(propertyTravaille.getLabels());
+        
+
+        //ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+        // Statement statement1 = StatementBuilder
+        // .forSubjectAndProperty(noid, propertyTravaille.getPropertyId())
+        // .withValue(Datamodel.makeStringValue("bluuuu")).build();
+
+        return propriete;
 
     }
 

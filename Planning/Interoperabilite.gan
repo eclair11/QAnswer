@@ -39,12 +39,12 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="1" name="Gestion de projet" meeting="false" start="2020-01-17" duration="41" complete="72" expand="true">
+        <task id="1" name="Gestion de projet" meeting="false" start="2020-01-17" duration="41" complete="100" expand="true">
             <task id="33" name="(D2.1) Itération 01" color="#00ccff" meeting="false" start="2020-01-17" duration="6" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
             <task id="36" name="(D2.2) Itération 02" color="#00ccff" meeting="false" start="2020-01-24" duration="11" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
             <task id="40" name="(D2.3) Itération 03" color="#00ccff" meeting="false" start="2020-02-07" duration="11" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
-            <task id="44" name="(D2.4) Itération 04" color="#00ccff" meeting="false" start="2020-02-21" duration="6" complete="80" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
-            <task id="47" name="(D2.5) Itération 05" color="#00ccff" meeting="false" start="2020-02-28" duration="11" complete="0" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
+            <task id="44" name="(D2.4) Itération 04" color="#00ccff" meeting="false" start="2020-02-21" duration="6" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
+            <task id="47" name="(D2.5) Itération 05" color="#00ccff" meeting="false" start="2020-02-28" duration="11" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
         </task>
         <task id="8" name="Interface utilisateur" meeting="false" start="2020-01-17" duration="16" complete="100" expand="true">
             <task id="9" name="(P1) Saisie basique" color="#ff00cc" meeting="false" start="2020-01-17" duration="6" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
@@ -68,8 +68,8 @@
             <task id="13" name="(D6.1) Principe extraction infos" color="#ff6600" meeting="false" start="2020-02-07" duration="11" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
             <task id="14" name="(P3.1) Extraction depuis source" color="#ff6600" meeting="false" start="2020-02-07" duration="11" complete="100" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="15" name="Description du plan de tests" color="#000000" meeting="false" start="2020-02-21" duration="6" complete="75" thirdDate="2020-01-13" thirdDate-constraint="0" expand="true">
-            <task id="80" name="(D7) Environnement de tests" color="#ff9900" meeting="false" start="2020-02-21" duration="6" complete="50" thirdDate="2020-01-20" thirdDate-constraint="0" expand="true"/>
+        <task id="15" name="Description du plan de tests" color="#000000" meeting="false" start="2020-02-21" duration="6" complete="100" thirdDate="2020-01-13" thirdDate-constraint="0" expand="true">
+            <task id="80" name="(D7) Environnement de tests" color="#ff9900" meeting="false" start="2020-02-21" duration="6" complete="100" thirdDate="2020-01-20" thirdDate-constraint="0" expand="true"/>
             <task id="81" name="(D7) Ecriture des tests" color="#ff9900" meeting="false" start="2020-02-21" duration="6" complete="100" thirdDate="2020-01-13" thirdDate-constraint="0" expand="true"/>
         </task>
         <task id="16" name="Application intégrée" meeting="false" start="2020-02-21" duration="21" complete="27" expand="true">
@@ -86,8 +86,8 @@
             <task id="19" name="(P5) Code source de l'application" color="#00ff00" meeting="false" start="2020-02-28" duration="16" complete="0" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
             <task id="20" name="(D8) Rapport final" color="#00ff00" meeting="false" start="2020-02-28" duration="16" complete="0" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="24" name="Présentation finale" meeting="false" start="2020-02-28" duration="16" complete="0" expand="true">
-            <task id="21" name="(D9) Powerpoint présentation" color="#00ffcc" meeting="false" start="2020-02-28" duration="16" complete="0" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
+        <task id="24" name="Présentation finale" meeting="false" start="2020-02-28" duration="16" complete="25" expand="true">
+            <task id="21" name="(D9) Powerpoint présentation" color="#00ffcc" meeting="false" start="2020-02-28" duration="16" complete="50" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
             <task id="22" name="(O1) Soutenance projet" color="#00ffcc" meeting="false" start="2020-02-28" duration="16" complete="0" thirdDate="2020-01-21" thirdDate-constraint="0" expand="true"/>
         </task>
     </tasks>

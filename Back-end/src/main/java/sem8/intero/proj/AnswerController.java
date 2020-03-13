@@ -31,6 +31,10 @@ public class AnswerController {
     @Autowired
     public BotRepository BotRepo;
 
+    /**
+     * Page de recherche classique de QAnswer
+     */
+
     @RequestMapping("/")
     public String index(Model m) {
         m.addAttribute("demande", new Demande());
@@ -44,6 +48,17 @@ public class AnswerController {
         ArrayList<Object> answer = AnswerQ.sendQuestion(d.getQuestion(), d.getLangue());
         redirect.addFlashAttribute("answer", answer);
         return "redirect:/";
+    }
+
+
+    /**
+     * Page du recherche version Javascript
+     */
+
+    /* API Version Javascript */
+    @RequestMapping("/recherche")
+    public String recherche(Model m) {
+        return "recherche";
     }
 
 
@@ -83,7 +98,7 @@ public class AnswerController {
             reponse="Déjà présent dans Wikidata, insertion de " + label +  " impossible";
         }
         else{
-            BotInsert.botot(label, description, lang);
+            BotInsert.insertEntiteBot(label, description, lang);
             reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
         }
 
@@ -131,15 +146,6 @@ public class AnswerController {
 
         reponse = BotInsert.transcritEntiteCode(label, code, lang, type);
 
-        /*
-        if(!BotInsert.estEntitePresente(label)){
-            reponse="Absent de la base Wikidata, mise à jour de  " + label +  " impossible";
-        }
-        else{
-            BotInsert.updateBot(label, description, lang);
-            reponse = "Vous avez effectué la mis à jour de " + label + " pour la langue '" + lang + "'";
-        }
-        */
         m.addAttribute("reponseTranscription", reponse);
         m.addAttribute("bool", "true");
 
