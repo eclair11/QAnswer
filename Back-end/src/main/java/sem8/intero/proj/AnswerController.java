@@ -3,6 +3,7 @@ package sem8.intero.proj;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.poi.ss.formula.functions.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +78,7 @@ public class AnswerController {
             m.addAttribute("reponseInsert", "");
             m.addAttribute("reponseUpdate", "");
             m.addAttribute("reponseTranscription", "");
+            m.addAttribute("reponseEntreprise", "");
             m.addAttribute("bool", false);        
         }
 
@@ -152,4 +154,52 @@ public class AnswerController {
         return "bot";
     }
 
+
+    /* Création d'une entité ou d'une propriété dans Wikidata */
+    @PostMapping("/botinsertEntreprise")
+    public String botinsertEntreprise(Model m, Bot b) throws MediaWikiApiErrorException, IOException, LoginFailedException {
+
+        /*
+        String label = "Willy&Co3";
+        String description = "";
+        String lang = "fr";
+        String CodePostal = "42000";
+        String SIREN = "000000000";
+        String SIRET = "00000000000000";
+        String CA = "0";
+        */
+
+        String label = b.getLabel(); //raison sociale de l'entreprise
+        String description = b.getDescription(); //domaine d'activité de l'entreprise
+        String lang = b.getLang();
+        String codePostal = b.getCodePostal();
+        String SIREN = b.getSIREN();
+        String SIRET = b.getSIRET();
+        String CA = b.getCA();
+
+        String reponse;
+
+        /* opération supplémentaires de tri */
+        CA = CA.replaceAll("[^0-9]", "");
+        CA = CA.trim();
+
+        if(BotInsert.estEntitePresente(label) ){
+            reponse="L'entreprise " + label +  " est déjà présente dans la base";
+        }
+        else if( !(codePostal.startsWith("42")) && codePostal.length() != 5) {
+            reponse = "Votre entreprise doit se situer à Saint-Étienne";
+        } else if (SIREN.length() != 9) {
+            reponse = "Votre numéro de SIREN est invalide";
+        } else if (SIRET.length() != 14) {
+            reponse = "Votre numéro de SIRET est invalide";
+        } else {
+            BotInsert.insertEntrepriseBot(label, description, lang, codePostal, SIREN, SIRET, CA);
+            reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
+        }
+
+        m.addAttribute("reponseEntreprise", reponse);
+        m.addAttribute("bool", "true");
+
+        return "bot";
+    }
 }

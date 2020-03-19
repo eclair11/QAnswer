@@ -3,6 +3,8 @@ package sem8.intero.proj.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.model.DataModel;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import org.wikidata.wdtk.datamodel.helpers.Datamodel;
@@ -18,6 +20,7 @@ import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * Bot
@@ -245,5 +248,81 @@ public class BotInsert {
         return propriete;
 
     }
+
+
+    /* Fonction principale de l'insertion de données par le Bot QAnswer/Wikidata */
+    public static String insertEntrepriseBot(String label, String description, String lang, String CodePostal, String SIREN, String SIRET, String CA)
+            throws MediaWikiApiErrorException, IOException, LoginFailedException {
+
+        
+
+        ApiConnection con = connexion();
+        WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
+
+        WikibaseDataEditor wbde = new WikibaseDataEditor(con, siteIri);
+
+        /* Récupération des informations des propriétés */
+        PropertyDocument propertyVilleResidence = (PropertyDocument) wbdf.getEntityDocument("P190");
+        PropertyDocument propertyCodePostal = (PropertyDocument) wbdf.getEntityDocument("P13");
+        PropertyDocument propertySIREN = (PropertyDocument) wbdf.getEntityDocument("P56");
+        PropertyDocument propertySIRET = (PropertyDocument) wbdf.getEntityDocument("P92");
+        PropertyDocument propertyCA = (PropertyDocument) wbdf.getEntityDocument("P134");
+
+        ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+        // Statement statement1 = StatementBuilder
+        // .forSubjectAndProperty(noid, propertyTravaille.getPropertyId())
+        // .withValue(Datamodel.makeStringValue("bluuuu")).build();
+
+        /* Liste de Statements */
+
+        /* Ville où est située l'entreprise, ici toujours Saint-Étienne */
+        StatementBuilder s1 = StatementBuilder.forSubjectAndProperty(noid, propertyVilleResidence.getPropertyId());
+        s1.withValue(Datamodel.makeItemIdValue("Q51", siteIri));
+
+        /* Code postal de l'entreprise, ici 42... */
+        StatementBuilder s2 = StatementBuilder.forSubjectAndProperty(noid, propertyCodePostal.getPropertyId())
+                .withValue(Datamodel.makeStringValue(CodePostal));
+
+        /* Code SIREN de l'entreprise */
+        StatementBuilder s3 = StatementBuilder.forSubjectAndProperty(noid, propertySIREN.getPropertyId())
+                .withValue(Datamodel.makeStringValue(SIREN));
+
+        /* Code SIREN de l'entreprise */
+        StatementBuilder s4 = StatementBuilder.forSubjectAndProperty(noid, propertySIRET.getPropertyId())
+                .withValue(Datamodel.makeStringValue(SIRET));
+
+        /* Chiffre d'affaire de l'entreprise */
+        StatementBuilder s5 = StatementBuilder.forSubjectAndProperty(noid, propertyCA.getPropertyId())
+                .withValue(Datamodel.makeQuantityValue(new BigDecimal(CA)));
+
+        Statement stat1 = s1.build(); /* ville */
+        Statement stat2 = s2.build(); /* Code Postal */
+        Statement stat3 = s3.build(); /* SIREN */
+        Statement stat4 = s4.build(); /* SIRET */
+        Statement stat5 = s5.build(); /* Chiffre d'affaire */
+
+        description = "Entreprise Stéphanoise";
+
+        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(label, lang)
+                .withDescription(description, lang)
+                .withStatement(stat1)
+                .withStatement(stat2)
+                .withStatement(stat3)
+                .withStatement(stat4)
+                .withStatement(stat5)
+                .build();
+
+        if (wbdf.searchEntities(label).isEmpty()) {
+            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by our bot");
+            return "Vous avez créé l'entreprise " + itemDocument.findLabel("fr");
+        } else {
+            System.out.println("Inutile, l'entreprise " + itemDocument.findLabel("fr") + " existe déjà");
+            return "Inutile, l'entité " + itemDocument.findLabel("fr") + " existe déjà";
+        }
+
+    }
+
+
 
 }

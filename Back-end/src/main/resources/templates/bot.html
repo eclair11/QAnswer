@@ -67,20 +67,43 @@
                     <input type="text" name="label" placeholder="Donnée à transcrire" />
 
                     <select name="lang" />
-                        <option th:value="'en'" th:text="Anglais"></option>
-                        <option th:value="'fr'" th:text="Français"></option>
+                    <option th:value="'en'" th:text="Anglais"></option>
+                    <option th:value="'fr'" th:text="Français"></option>
                     </select>
 
                     <select name="transcription" />
-                        <option th:value="'false'" th:text="Code"></option>
-                        <option th:value="'true'" th:text="Label"></option>
+                    <option th:value="'false'" th:text="Code"></option>
+                    <option th:value="'true'" th:text="Label"></option>
                     </select>
 
                     <input type="submit" value="Valider">
                 </form>
                 </br>
 
-                <span th:text="${reponseTranscription}"></span>
+                <!-- Formulaire d'insertion d'Entreprises-->
+                <h1>Insertion dans d'Entreprises</h1>
+                <form th:action="@{/botinsertEntreprise}" method="post">
+
+                    <input type="text" name="label" placeholder="Raison Sociale" />
+                    <input type="text" name="description" placeholder="Domaine d'activité" />
+
+                    <select name="lang" />
+                    <option th:value="'en'" th:text="Anglais"></option>
+                    <option th:value="'fr'" th:text="Français"></option>
+                    </select>
+                    </br>
+
+                    <input type="text" name="SIREN" placeholder="n° de SIREN" />
+                    <input type="text" name="SIRET" placeholder="n° de SIRET" />
+                    </br>
+                    <input type="text" name="codePostal" placeholder="Code Postal" />
+                    <input type="text" name="CA" placeholder="Chiffre d'affaire" />
+                    </br>
+                    <input type="submit" value="Valider">
+                </form>
+                </br>
+
+                <span th:text="${reponseEntreprise}"></span>
 
             </div>
         </div>

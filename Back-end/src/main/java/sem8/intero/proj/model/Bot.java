@@ -26,6 +26,11 @@ public class Bot {
     private boolean transcription;  //0 -> Code -> Infos / 1 -> Label -> Code
     private boolean type; //0 -> Insertion / 1 -> Modification
 
+    String codePostal;
+    String SIREN;
+    String SIRET;
+    String CA; 
+
     public Bot() {
     }
 
@@ -99,6 +104,38 @@ public class Bot {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getSIREN() {
+        return SIREN;
+    }
+
+    public void setSIREN(String sIREN) {
+        SIREN = sIREN;
+    }
+
+    public String getSIRET() {
+        return SIRET;
+    }
+
+    public void setSIRET(String sIRET) {
+        SIRET = sIRET;
+    }
+
+    public String getCA() {
+        return CA;
+    }
+
+    public void setCA(String cA) {
+        CA = cA;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
     }
 
 }
