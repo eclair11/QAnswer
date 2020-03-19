@@ -211,25 +211,21 @@ public class AnswerController {
 
 
     /* Création d'une entité ou d'une propriété dans Wikidata */
-    @PostMapping("/botinsertEntrepriseHTML")
-    public String botinsertEntrepriseHTML(Model m, Bot b) throws MediaWikiApiErrorException, IOException, LoginFailedException {
-
-       
-        Turnover turn = new Turnover();
+    @RequestMapping("/botinsertEntrepriseHTML")
+    public String botinsertEntrepriseHTML() throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
         List<Turnover> turnList= new ArrayList<>();
         turnList = turnoverRepo.findAll();
 
-
-
+        /* Boucle à insérer ici */
 
         String label = turnList.get(0).getRaisonSocial(); //raison sociale de l'entreprise
-        String description = b.getDescription(); //domaine d'activité de l'entreprise
-        String lang = b.getLang();
-        String codePostal = b.getCodePostal();
-        String SIREN = b.getSIREN();
-        String SIRET = b.getSIRET();
-        String CA = b.getCA();
+        String description = "Entreprise stéphanoise"; //domaine d'activité de l'entreprise
+        String lang = "fr";
+        String codePostal = turnList.get(0).getCodePostal();
+        String SIREN = "000000000";
+        String SIRET = "00000000000000";
+        String CA = turnList.get(0).getChiffreAffaires();
 
         String reponse;
 
@@ -242,17 +238,14 @@ public class AnswerController {
         }
         else if( !(codePostal.startsWith("42")) && codePostal.length() != 5) {
             reponse = "Votre entreprise doit se situer à Saint-Étienne";
-        } else if (SIREN.length() != 9) {
-            reponse = "Votre numéro de SIREN est invalide";
-        } else if (SIRET.length() != 14) {
-            reponse = "Votre numéro de SIRET est invalide";
-        } else {
+        }
+        else {
             BotInsert.insertEntrepriseBot(label, description, lang, codePostal, SIREN, SIRET, CA);
             reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
         }
 
-        m.addAttribute("reponseEntreprise", reponse);
-        m.addAttribute("bool", "true");
+        //m.addAttribute("reponseEntreprise", reponse);
+        //m.addAttribute("bool", "true");
 
         return "bot";
     }

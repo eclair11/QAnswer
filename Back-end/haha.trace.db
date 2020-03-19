@@ -439,3 +439,7 @@ delete * from enterprise [42001-200]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "DELETE *[*] FROM ENTERPRISE"; attendu "identifier"
 Syntax error in SQL statement "DELETE *[*] FROM ENTERPRISE"; expected "identifier"; SQL statement:
 DELETE * FROM ENTERPRISE [42001-200]
+2020-03-19 23:07:34 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "ID[*]"; attendu "INSERT"
+Syntax error in SQL statement "ID[*]"; expected "INSERT"; SQL statement:
+ID [42001-200]
