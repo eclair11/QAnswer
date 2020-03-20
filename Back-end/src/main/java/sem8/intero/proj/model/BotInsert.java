@@ -213,11 +213,9 @@ public class BotInsert {
                     infoEntite = (ItemDocument) wbdf.getEntityDocument(label);
                     String ReponseLabel = infoEntite.findLabel(lang);
                     String ReponseDescription = infoEntite.findDescription(lang);
-                    return "[Code] => " + label + " / " + 
-                        "\n[Label] => " + ReponseLabel + " / " + 
-                        "\n[Description] => " + ReponseDescription;
-                } 
-                else {
+                    return "[Code] => " + label + " / " + "\n[Label] => " + ReponseLabel + " / " + "\n[Description] => "
+                            + ReponseDescription;
+                } else {
                     return "L'entité [" + label + "] n'existe pas encore";
                 }
             } else {
@@ -229,7 +227,7 @@ public class BotInsert {
     }
 
     /* Retourne une proporiete en fonction d'un code de type 'P163' */
-    public static String infoPropiete(String propriete) throws MediaWikiApiErrorException, LoginFailedException {
+    public static String infoPropriete(String propriete) throws MediaWikiApiErrorException, LoginFailedException {
 
         ApiConnection con = connexion();
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
@@ -238,9 +236,8 @@ public class BotInsert {
         /* Récupération des informations des propriétés */
         PropertyDocument propertyTravaille = (PropertyDocument) wbdf.getEntityDocument("P163");
         System.out.println(propertyTravaille.getLabels());
-        
 
-        //ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+        // ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
         // Statement statement1 = StatementBuilder
         // .forSubjectAndProperty(noid, propertyTravaille.getPropertyId())
         // .withValue(Datamodel.makeStringValue("bluuuu")).build();
@@ -249,17 +246,19 @@ public class BotInsert {
 
     }
 
-
     /* Fonction principale de l'insertion de données par le Bot QAnswer/Wikidata */
-    public static String insertEntrepriseBot(String label, String description, String lang, String CodePostal, String SIREN, String SIRET, String CA)
+    public static String insertEntrepriseBot(String label, String description, String lang, String ville, String CodePostal,
+            String SIREN, String SIRET, String CA)
             throws MediaWikiApiErrorException, IOException, LoginFailedException {
-
-        
 
         ApiConnection con = connexion();
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
 
         WikibaseDataEditor wbde = new WikibaseDataEditor(con, siteIri);
+
+        if ( !(wbdf.searchEntities(label).isEmpty()) || !(chercheIDByLabel(wbdf, label, lang).isEmpty()) ) {
+            return "Vous avez déjà créé l'entreprise " + label;
+        }
 
         /* Récupération des informations des propriétés */
         PropertyDocument propertyVilleResidence = (PropertyDocument) wbdf.getEntityDocument("P190");
@@ -268,16 +267,28 @@ public class BotInsert {
         PropertyDocument propertySIRET = (PropertyDocument) wbdf.getEntityDocument("P92");
         PropertyDocument propertyCA = (PropertyDocument) wbdf.getEntityDocument("P134");
 
-        ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
-        // Statement statement1 = StatementBuilder
-        // .forSubjectAndProperty(noid, propertyTravaille.getPropertyId())
-        // .withValue(Datamodel.makeStringValue("bluuuu")).build();
+        ItemIdValue noid = ItemIdValue.NULL;
 
         /* Liste de Statements */
 
         /* Ville où est située l'entreprise, ici toujours Saint-Étienne */
         StatementBuilder s1 = StatementBuilder.forSubjectAndProperty(noid, propertyVilleResidence.getPropertyId());
-        s1.withValue(Datamodel.makeItemIdValue("Q51", siteIri));
+
+        /* on teste si la ville existe, sinon on la crée */
+        if (wbdf.searchEntities(ville).isEmpty()) {
+            insertEntiteBoucle(ville);
+        }
+
+        /* par défault */
+        String IDCode = "Q51";
+
+        ArrayList<String> infoId = new ArrayList<>();
+        infoId = chercheIDByLabel(wbdf, ville, lang);
+        if (!(infoId.isEmpty()) ) {
+            IDCode = infoId.get(0);
+        }
+
+        s1.withValue(Datamodel.makeItemIdValue(IDCode, siteIri));
 
         /* Code postal de l'entreprise, ici 42... */
         StatementBuilder s2 = StatementBuilder.forSubjectAndProperty(noid, propertyCodePostal.getPropertyId())
@@ -303,15 +314,9 @@ public class BotInsert {
 
         description = "Entreprise Stéphanoise";
 
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(label, lang)
-                .withDescription(description, lang)
-                .withStatement(stat1)
-                .withStatement(stat2)
-                .withStatement(stat3)
-                .withStatement(stat4)
-                .withStatement(stat5)
-                .build();
+        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).withLabel(label, lang)
+                .withDescription(description, lang).withStatement(stat1).withStatement(stat2).withStatement(stat3)
+                .withStatement(stat4).withStatement(stat5).build();
 
         if (wbdf.searchEntities(label).isEmpty()) {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by our bot");
@@ -323,6 +328,42 @@ public class BotInsert {
 
     }
 
+    /**
+     * Fonction annexe de l'insertion en boucle d'Entreprises 
+     * Création d'une ville française si celle-ci n'est pas présente dans la botWikidata
+     */ 
+    public static String insertEntiteBoucle(String label)
+            throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
+        ApiConnection con = connexion();
+        WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
+        WikibaseDataEditor wbde = new WikibaseDataEditor(con, siteIri);
+
+        /* Récupération des informations des propriétés */
+        PropertyDocument propertyPays = (PropertyDocument) wbdf.getEntityDocument("P163");
+        ItemIdValue noid = ItemIdValue.NULL;
+
+        StatementBuilder s = StatementBuilder.forSubjectAndProperty(noid, propertyPays.getPropertyId());
+        Statement stat = s.withValue(Datamodel.makeItemIdValue("Q29", siteIri)).build();
+
+        String descriptionFr = "Ville de l'agglomération Stéphanoise";
+        String langFr = "fr";
+        String descriptionEn = "City of the Stéphanoise agglomeration";
+        String langEn = "en";
+
+        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).withLabel(label, langFr)
+                .withDescription(descriptionFr, langFr)
+                .withLabel(label, langEn).withDescription(descriptionEn, langEn)
+                .withStatement(stat).build();
+
+        if (wbdf.searchEntities(label).isEmpty()) {
+            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Ville crée par le bot");
+            return "Vous avez créé l'entité Ville" + itemDocument.findLabel("en");
+        } else {
+            System.out.println("Inutile, l'entité " + itemDocument.findLabel("en") + " existe déjà");
+            return "Inutile, l'entité " + itemDocument.findLabel("en") + " existe déjà";
+        }
+
+    }
 
 }

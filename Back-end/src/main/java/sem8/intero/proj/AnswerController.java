@@ -170,6 +170,7 @@ public class AnswerController {
         String label = b.getLabel(); // raison sociale de l'entreprise
         String description = b.getDescription(); // domaine d'activité de l'entreprise
         String lang = b.getLang();
+        String ville = b.getVille();
         String codePostal = b.getCodePostal();
         String SIREN = b.getSIREN();
         String SIRET = b.getSIRET();
@@ -183,6 +184,7 @@ public class AnswerController {
 
         if (BotInsert.estEntitePresente(label)) {
             reponse = "L'entreprise " + label + " est déjà présente dans la base";
+            return "bot";
         } else if (!(codePostal.startsWith("42")) && codePostal.length() != 5) {
             reponse = "Votre entreprise doit se situer à Saint-Étienne";
         } else if (SIREN.length() != 9) {
@@ -190,7 +192,7 @@ public class AnswerController {
         } else if (SIRET.length() != 14) {
             reponse = "Votre numéro de SIRET est invalide";
         } else {
-            BotInsert.insertEntrepriseBot(label, description, lang, codePostal, SIREN, SIRET, CA);
+            BotInsert.insertEntrepriseBot(label, description, lang, ville, codePostal, SIREN, SIRET, CA);
             reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
         }
 
@@ -203,32 +205,80 @@ public class AnswerController {
     /* Création d'une entité ou d'une propriété dans Wikidata */
     @RequestMapping("/botinsertEntrepriseHTML")
     public String botinsertEntrepriseHTML() throws MediaWikiApiErrorException, IOException, LoginFailedException {
+
+        String label = ""; // raison sociale de l'entreprise
+        String description = "Entreprise stéphanoise"; // domaine d'activité de l'entreprise
+        String lang = "fr";              //langue qui demeure française pour l'insertion en boucle 
+        String ville = "Saint-Étienne";
+        String codePostal = "";
+        String SIREN = "000000000";      //le HTML ne contient pas de SIREN, valeur par défaut 
+        String SIRET = "00000000000000"; //le HTML ne contient pas de SIREN, valeur par défaut
+        String CA = "";
+
         List<Turnover> turnList = turnoverRepo.findAll();
+
         /* Boucle à insérer ici */
-        for (int i = 5; i < 10; i++) {
-            String label = turnList.get(i).getRaisonSocial(); // raison sociale de l'entreprise
-            String description = "Entreprise stéphanoise"; // domaine d'activité de l'entreprise
-            String lang = "fr";
-            String codePostal = turnList.get(i).getCodePostal();
-            String SIREN = "000000000";
-            String SIRET = "00000000000000";
-            String CA = turnList.get(i).getChiffreAffaires();
-            /* opération supplémentaires de tri */
-            CA = CA.replaceAll("[^0-9]", "");
-            CA = CA.trim();
-            /* réponse du serveur */
-            String reponse = "";
-            if (BotInsert.estEntitePresente(label)) {
-                reponse = "L'entreprise " + label + " est déjà présente dans la base";
-            } else if (!(codePostal.startsWith("42")) && codePostal.length() != 5) {
-                reponse = "Votre entreprise doit se situer à Saint-Étienne";
-            } else {
-                BotInsert.insertEntrepriseBot(label, description, lang, codePostal, SIREN, SIRET, CA);
-                reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
+        for (int i = 0; i < 9; i++) {
+
+            if( !(turnList.isEmpty()) ){
+
+                if( turnList.get(i) != null){
+
+                    label = turnList.get(i).getRaisonSocial(); // raison sociale de l'entreprise
+                    ville = turnList.get(i).getVille();
+                    codePostal = turnList.get(i).getCodePostal();
+                    CA = turnList.get(i).getChiffreAffaires();
+
+                    /* opération supplémentaires sur les chaînes de caractères */
+
+                    /* chiffre d'affaire */
+                    CA = CA.replaceAll("[^0-9]", "");
+                    CA = CA.trim();
+
+                    if( ville.contains("Ã‰")){
+                        ville.replaceAll("Ã‰", "É");
+                    }
+                    if( ville.contains("Ã¨")){
+                        ville.replaceAll("Ã¨", "è");
+                    }
+                    if( ville.contains("Ã©")){
+                        ville.replaceAll("Ã©", "é");
+                    }
+                    if( ville.contains("Ãª")){
+                        ville.replaceAll("Ãª", "ê");
+                    }
+
+                    /* réponse du serveur */
+
+                    String reponse = "";
+
+                    if (BotInsert.estEntitePresente(label)) {
+                        reponse = "L'entreprise " + label + " est déjà présente dans la base";
+                        continue;
+                    } 
+                    else if (!(codePostal.startsWith("42")) && codePostal.length() != 5) {
+                        reponse = "Votre entreprise doit se situer dans l'agglomération Saint-Étienne";
+                    } 
+                    else {
+                        BotInsert.insertEntrepriseBot(label, description, lang, ville, codePostal, SIREN, SIRET, CA);
+                        reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
+                    }
+
+                    // m.addAttribute("reponseEntreprise", reponse);
+                    // m.addAttribute("bool", "true");
+
+                }
+                else{
+                    System.out.println("Index de la base de données vide");
+                }
+                
             }
-            // m.addAttribute("reponseEntreprise", reponse);
-            // m.addAttribute("bool", "true");
+            else{
+                System.out.println("Base de données vide");
+            }
+            
         }
+
         return "bot";
     }
 

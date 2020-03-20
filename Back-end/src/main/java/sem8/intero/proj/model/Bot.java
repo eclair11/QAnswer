@@ -26,6 +26,7 @@ public class Bot {
     private boolean transcription;  //0 -> Code -> Infos / 1 -> Label -> Code
     private boolean type; //0 -> Insertion / 1 -> Modification
 
+    String ville;
     String codePostal;
     String SIREN;
     String SIRET;
@@ -136,6 +137,14 @@ public class Bot {
 
     public void setCodePostal(String codePostal) {
         this.codePostal = codePostal;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
     }
 
 }
