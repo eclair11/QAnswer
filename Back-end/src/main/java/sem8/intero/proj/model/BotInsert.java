@@ -276,7 +276,7 @@ public class BotInsert {
 
         /* on teste si la ville existe, sinon on la crée */
         if (wbdf.searchEntities(ville).isEmpty()) {
-            insertEntiteBoucle(ville);
+            insertVilleEntrepriseBoucle(ville);
         }
 
         /* par défault */
@@ -332,7 +332,7 @@ public class BotInsert {
      * Fonction annexe de l'insertion en boucle d'Entreprises 
      * Création d'une ville française si celle-ci n'est pas présente dans la botWikidata
      */ 
-    public static String insertEntiteBoucle(String label)
+    public static String insertVilleEntrepriseBoucle(String label)
             throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
         ApiConnection con = connexion();

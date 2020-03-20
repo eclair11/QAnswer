@@ -447,3 +447,27 @@ ID [42001-200]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "DELETE *[*] FROM TURNOVER"; attendu "identifier"
 Syntax error in SQL statement "DELETE *[*] FROM TURNOVER"; expected "identifier"; SQL statement:
 delete * from turnover [42001-200]
+2020-03-20 06:55:58 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELEECT[*] * FROM ENTERPRISE WHERE ENSEIGNE1ETABLISSEMENT IS NOT NULL"; attendu "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"
+Syntax error in SQL statement "SELEECT[*] * FROM ENTERPRISE WHERE ENSEIGNE1ETABLISSEMENT IS NOT NULL"; expected "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+seleect * from enterprise where ENSEIGNE1ETABLISSEMENT is not null [42001-200]
+2020-03-20 06:57:32 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELEECT[*] * FROM 'enterprise' WHERE 'ENSEIGNE1ETABLISSEMENT' IS NOT NULL"; attendu "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"
+Syntax error in SQL statement "SELEECT[*] * FROM 'enterprise' WHERE 'ENSEIGNE1ETABLISSEMENT' IS NOT NULL"; expected "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+seleect * from 'enterprise' where 'ENSEIGNE1ETABLISSEMENT' is not null [42001-200]
+2020-03-20 06:57:48 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELECT * FROM 'enterprise'[*] WHERE 'ENSEIGNE1ETABLISSEMENT' IS NOT NULL"; attendu "identifier"
+Syntax error in SQL statement "SELECT * FROM 'enterprise'[*] WHERE 'ENSEIGNE1ETABLISSEMENT' IS NOT NULL"; expected "identifier"; SQL statement:
+select * from 'enterprise' where 'ENSEIGNE1ETABLISSEMENT' is not null [42001-200]
+2020-03-20 06:57:57 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELECT * FROM 'enterprise'[*] WHERE 'ENSEIGNE1ETABLISSEMENT' IS NULL"; attendu "identifier"
+Syntax error in SQL statement "SELECT * FROM 'enterprise'[*] WHERE 'ENSEIGNE1ETABLISSEMENT' IS NULL"; expected "identifier"; SQL statement:
+select * from 'enterprise' where 'ENSEIGNE1ETABLISSEMENT' is null [42001-200]
+2020-03-20 06:58:07 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELECT * FROM 'enterprise'[*] WHERE 'ENSEIGNE1ETABLISSEMENT'= ''"; attendu "identifier"
+Syntax error in SQL statement "SELECT * FROM 'enterprise'[*] WHERE 'ENSEIGNE1ETABLISSEMENT'= ''"; expected "identifier"; SQL statement:
+select * from 'enterprise' where 'ENSEIGNE1ETABLISSEMENT'= '' [42001-200]
+2020-03-20 06:58:24 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELECT * FROM 'enterprise'[*] WHERE ""ENSEIGNE1ETABLISSEMENT""= ''"; attendu "identifier"
+Syntax error in SQL statement "SELECT * FROM 'enterprise'[*] WHERE ""ENSEIGNE1ETABLISSEMENT""= ''"; expected "identifier"; SQL statement:
+select * from 'enterprise' where "ENSEIGNE1ETABLISSEMENT"= '' [42001-200]

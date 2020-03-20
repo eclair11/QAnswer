@@ -15,11 +15,13 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import sem8.intero.proj.Repository.BotRepository;
 import sem8.intero.proj.Repository.DemandeRepository;
+import sem8.intero.proj.Repository.EnterpriseRepository;
 import sem8.intero.proj.Repository.TurnoverRepository;
 import sem8.intero.proj.model.AnswerQ;
 import sem8.intero.proj.model.Bot;
 import sem8.intero.proj.model.BotInsert;
 import sem8.intero.proj.model.Demande;
+import sem8.intero.proj.model.Enterprise;
 import sem8.intero.proj.model.Turnover;
 
 /**
@@ -36,6 +38,9 @@ public class AnswerController {
 
     @Autowired
     public TurnoverRepository turnoverRepo;
+
+    @Autowired
+    public EnterpriseRepository enterpriseRepo;
 
     /**
      * Page de recherche classique de QAnswer
@@ -202,7 +207,7 @@ public class AnswerController {
         return "bot";
     }
 
-    /* Création d'une entité ou d'une propriété dans Wikidata */
+    /* Insertion en boucle des entreprises issues du parsing HTML dans Wikidata */
     @RequestMapping("/botinsertEntrepriseHTML")
     public String botinsertEntrepriseHTML() throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
@@ -281,5 +286,70 @@ public class AnswerController {
 
         return "bot";
     }
+
+
+    /* Insertion en boucle des entreprises issues du parsing CSV dans Wikidata */
+    @RequestMapping("/botinsertEntrepriseCSV")
+    public String botinsertEntrepriseCSV() throws MediaWikiApiErrorException, IOException, LoginFailedException {
+
+        String label = ""; // raison sociale de l'entreprise
+        String description = "Entreprise stéphanoise"; // domaine d'activité de l'entreprise
+        String lang = "fr";              //langue qui demeure française pour l'insertion en boucle 
+        String ville = "Saint-Étienne";
+        String codePostal = "";
+        String SIREN = "000000000";      //le HTML ne contient pas de SIREN, valeur par défaut 
+        String SIRET = "00000000000000"; //le HTML ne contient pas de SIREN, valeur par défaut
+        String CA = "0";
+        
+        List<Enterprise> enterpriseList = enterpriseRepo.findAll();
+
+        /* Boucle à insérer ici */
+        for (int i = 0; i < 5; i++) {
+
+            if( !(enterpriseList.isEmpty()) ){
+
+                if( enterpriseList.get(i) != null){
+
+
+                    if(enterpriseList.get(i).getEnseigne1Etablissement().equals("")){                      
+                        continue;
+                    }
+                    label = enterpriseList.get(i).getEnseigne1Etablissement();
+                    codePostal = enterpriseList.get(i).getCodePostalEtablissement();              
+                    SIREN = enterpriseList.get(i).getSiren();
+                    SIRET = enterpriseList.get(i).getSiret();
+
+                    /* réponse du serveur */
+                    String reponse = "";
+
+                    if (BotInsert.estEntitePresente(label)) {
+                        reponse = "L'entreprise " + label + " est déjà présente dans la base";
+                        System.out.println(reponse);
+                        continue;
+                    } 
+                    else {
+                        BotInsert.insertEntrepriseBot(label, description, lang, ville, codePostal, SIREN, SIRET, CA);
+                        reponse = "Vous avez créé l'entité pour la langue '" + lang + "'";
+                        System.out.println(reponse);
+                    }
+
+                    // m.addAttribute("reponseEntreprise", reponse);
+                    // m.addAttribute("bool", "true");
+
+                }
+                else{
+                    System.out.println("Index de la base de données vide");
+                }
+                
+            }
+            else{
+                System.out.println("Base de données vide");
+            }
+            
+        }
+
+        return "bot";
+    }
+
 
 }
