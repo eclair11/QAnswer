@@ -7,9 +7,6 @@ import javax.persistence.Id;
 
 import com.opencsv.bean.CsvBindByName;
 
-/**
- * Enterprise
- */
 @Entity
 public class Enterprise {
 

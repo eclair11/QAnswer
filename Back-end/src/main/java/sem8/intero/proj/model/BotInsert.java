@@ -1,30 +1,25 @@
 package sem8.intero.proj.model;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.faces.model.DataModel;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import org.wikidata.wdtk.datamodel.helpers.Datamodel;
 import org.wikidata.wdtk.datamodel.helpers.ItemDocumentBuilder;
 import org.wikidata.wdtk.datamodel.helpers.StatementBuilder;
+import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
+import org.wikidata.wdtk.datamodel.interfaces.ItemIdValue;
+import org.wikidata.wdtk.datamodel.interfaces.PropertyDocument;
+import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.util.WebResourceFetcherImpl;
 import org.wikidata.wdtk.wikibaseapi.ApiConnection;
+import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
 import org.wikidata.wdtk.wikibaseapi.WbSearchEntitiesResult;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher;
-import org.wikidata.wdtk.datamodel.interfaces.*;
-import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-
-/**
- * Bot
- */
 public class BotInsert {
 
     final static String siteIri = "https://qanswer-eu.univ-st-etienne.fr/index.php";
@@ -131,11 +126,8 @@ public class BotInsert {
         ApiConnection con = connexion();
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
 
-        if (wbdf.searchEntities(label).isEmpty() &&
-                 (  (chercheIDByLabel(wbdf, label, "en").isEmpty()) &&
-                    (chercheIDByLabel(wbdf, label, "fr").isEmpty())
-                 )
-            ) {
+        if (wbdf.searchEntities(label).isEmpty() && ((chercheIDByLabel(wbdf, label, "en").isEmpty())
+                && (chercheIDByLabel(wbdf, label, "fr").isEmpty()))) {
             return false;
         }
 
@@ -155,9 +147,9 @@ public class BotInsert {
         ArrayList<String> IDList = chercheIDByLabel(wbdf, reference, lang);
 
         IDList = chercheIDByLabel(wbdf, reference, "en");
-        if(IDList.isEmpty()){
+        if (IDList.isEmpty()) {
             IDList = chercheIDByLabel(wbdf, reference, "fr");
-            if(IDList.isEmpty()){
+            if (IDList.isEmpty()) {
                 return "Aucune mise à jour possible";
             }
         }
@@ -259,8 +251,8 @@ public class BotInsert {
     }
 
     /* Fonction principale de l'insertion de données par le Bot QAnswer/Wikidata */
-    public static String insertEntrepriseBot(String label, String description, String lang, String ville, String CodePostal,
-            String SIREN, String SIRET, String CA)
+    public static String insertEntrepriseBot(String label, String description, String lang, String ville,
+            String CodePostal, String SIREN, String SIRET, String CA)
             throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
         ApiConnection con = connexion();
@@ -268,7 +260,7 @@ public class BotInsert {
 
         WikibaseDataEditor wbde = new WikibaseDataEditor(con, siteIri);
 
-        if ( !(wbdf.searchEntities(label).isEmpty()) || !(chercheIDByLabel(wbdf, label, lang).isEmpty()) ) {
+        if (!(wbdf.searchEntities(label).isEmpty()) || !(chercheIDByLabel(wbdf, label, lang).isEmpty())) {
             return "Vous avez déjà créé l'entreprise " + label;
         }
 
@@ -296,7 +288,7 @@ public class BotInsert {
 
         ArrayList<String> infoId = new ArrayList<>();
         infoId = chercheIDByLabel(wbdf, ville, lang);
-        if (!(infoId.isEmpty()) ) {
+        if (!(infoId.isEmpty())) {
             IDCode = infoId.get(0);
         }
 
@@ -341,9 +333,9 @@ public class BotInsert {
     }
 
     /**
-     * Fonction annexe de l'insertion en boucle d'Entreprises 
-     * Création d'une ville française si celle-ci n'est pas présente dans la botWikidata
-     */ 
+     * Fonction annexe de l'insertion en boucle d'Entreprises Création d'une ville
+     * française si celle-ci n'est pas présente dans la botWikidata
+     */
     public static String insertVilleEntrepriseBoucle(String label)
             throws MediaWikiApiErrorException, IOException, LoginFailedException {
 
@@ -364,8 +356,7 @@ public class BotInsert {
         String langEn = "en";
 
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).withLabel(label, langFr)
-                .withDescription(descriptionFr, langFr)
-                .withLabel(label, langEn).withDescription(descriptionEn, langEn)
+                .withDescription(descriptionFr, langFr).withLabel(label, langEn).withDescription(descriptionEn, langEn)
                 .withStatement(stat).build();
 
         if (wbdf.searchEntities(label).isEmpty()) {
@@ -377,8 +368,6 @@ public class BotInsert {
         }
 
     }
-
-
 
     /**
      * Traduit un label d'entité en code et inversement type : false => code ->
@@ -430,9 +419,9 @@ public class BotInsert {
                     String ReponseVille = infoEntite.findDescription(lang);
                     String ReponseCA = infoEntite.findStatement("P134").getValue().toString();
 
-                    String reponse = "[" + label + "] / " + "[" + ReponseLabel + "] / " +
-                     "[" + ReponseDescription + "] / " + "[N°SIREN = " + ReponseSIREN + "] / " +
-                     "[N°SIRET = " + ReponseSIRET + "] / " + "[CA = " + ReponseCA + "] / ";
+                    String reponse = "[" + label + "] / " + "[" + ReponseLabel + "] / " + "[" + ReponseDescription
+                            + "] / " + "[N°SIREN = " + ReponseSIREN + "] / " + "[N°SIRET = " + ReponseSIRET + "] / "
+                            + "[CA = " + ReponseCA + "] / ";
 
                     return reponse;
                 } else {
@@ -445,6 +434,5 @@ public class BotInsert {
         }
 
     }
-
 
 }

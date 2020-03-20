@@ -5,9 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * Turnover
- */
 @Entity
 public class Turnover {
 
@@ -16,11 +13,8 @@ public class Turnover {
     Long id;
 
     String raisonSocial;
-
     String codePostal;
-
     String ville;
-
     String chiffreAffaires;
 
     public Turnover() {

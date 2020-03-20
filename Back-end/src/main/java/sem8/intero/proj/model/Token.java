@@ -1,8 +1,5 @@
 package sem8.intero.proj.model;
 
-/**
- * Token
- */
 public class Token {
 
     private String accessToken;

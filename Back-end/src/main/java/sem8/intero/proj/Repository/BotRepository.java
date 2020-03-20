@@ -4,11 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import sem8.intero.proj.model.Bot;
 
-/**
- * BotRepository
- */
-public interface BotRepository extends JpaRepository<Bot, Long>{
-
-   
+public interface BotRepository extends JpaRepository<Bot, Long> {
 
 }

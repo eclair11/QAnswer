@@ -30,9 +30,6 @@ import sem8.intero.proj.model.Enterprise;
 import sem8.intero.proj.model.Turnover;
 import sem8.intero.proj.model.Upload;
 
-/**
- * ParserController
- */
 @Controller
 public class ParserController {
 

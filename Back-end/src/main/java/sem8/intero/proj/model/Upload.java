@@ -2,9 +2,6 @@ package sem8.intero.proj.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Upload
- */
 public class Upload {
 
     private MultipartFile[] files;

@@ -5,32 +5,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * Bot
- */
 @Entity
 public class Bot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String lang;
     private String label;
     private String description;
     private String alias;
-
     private String code;
     private String reference; // utilisé pour l'update du Bot Wikidata
-
-    private boolean transcription;  //0 -> Code -> Infos / 1 -> Label -> Code
-    private boolean type; //0 -> Insertion / 1 -> Modification
-
-    String ville;
-    String codePostal;
-    String SIREN;
-    String SIRET;
-    String CA; 
+    private boolean transcription; // 0 -> Code -> Infos / 1 -> Label -> Code
+    private boolean type; // 0 -> Insertion / 1 -> Modification
+    private String ville;
+    private String codePostal;
+    private String SIREN;
+    private String SIRET;
+    private String CA;
 
     public Bot() {
     }
