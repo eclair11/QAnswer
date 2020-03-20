@@ -107,7 +107,7 @@ public class BotInsert {
         // .withValue(Datamodel.makeStringValue("bluuuu")).build();
 
         StatementBuilder s = StatementBuilder.forSubjectAndProperty(noid, propertyTravaille.getPropertyId());
-        s.withValue(Datamodel.makeItemIdValue("Q252", siteIri));
+        s.withValue(Datamodel.makeItemIdValue("Q51", siteIri));
 
         Statement stat = s.build();
 
@@ -131,7 +131,11 @@ public class BotInsert {
         ApiConnection con = connexion();
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
 
-        if (wbdf.searchEntities(label).isEmpty()) {
+        if (wbdf.searchEntities(label).isEmpty() &&
+                 (  (chercheIDByLabel(wbdf, label, "en").isEmpty()) &&
+                    (chercheIDByLabel(wbdf, label, "fr").isEmpty())
+                 )
+            ) {
             return false;
         }
 
@@ -149,6 +153,14 @@ public class BotInsert {
 
         /* Recherche de L'Id de l'entité ou de la propriété */
         ArrayList<String> IDList = chercheIDByLabel(wbdf, reference, lang);
+
+        IDList = chercheIDByLabel(wbdf, reference, "en");
+        if(IDList.isEmpty()){
+            IDList = chercheIDByLabel(wbdf, reference, "fr");
+            if(IDList.isEmpty()){
+                return "Aucune mise à jour possible";
+            }
+        }
         String IdPouQ = IDList.get(0);
 
         /* IdValue propre à l'update */
@@ -365,5 +377,74 @@ public class BotInsert {
         }
 
     }
+
+
+
+    /**
+     * Traduit un label d'entité en code et inversement type : false => code ->
+     * entité : true => entité -> code
+     * 
+     * @throws MediaWikiApiErrorException
+     */
+    public static String transcritEntiteCodeEntreprise(String label, String code, String lang, boolean type)
+            throws LoginFailedException, MediaWikiApiErrorException {
+
+        /* Connexion à la base et instanciation des objets WikiFetcher */
+        ApiConnection con = connexion();
+        WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
+
+        System.out.println(label);
+        System.out.println(code);
+        System.out.println(lang);
+        System.out.println(type);
+
+        if (type == true) {
+            /* Recherche de L'Id de l'entité ou de la propriété avec le label */
+
+            ArrayList<String> infoId = new ArrayList<>();
+            infoId = chercheIDByLabel(wbdf, label, lang);
+            if (infoId.isEmpty()) {
+                return "A moins d'une erreur d'ortographe de votre part, cette référence n'est pas encore inscrite dans la database";
+            } else {
+                String IDCode = infoId.get(0);
+                return IDCode;
+            }
+
+        } else {
+            /* Recherche des infos avec l'Id de l'entité ou de la propriété */
+            ItemDocument infoEntite;
+
+            if (label.startsWith("Q")) {
+                if (wbdf.getEntityDocument(label) != null) {
+                    infoEntite = (ItemDocument) wbdf.getEntityDocument(label);
+                    String ReponseLabel = infoEntite.findLabel(lang);
+                    String ReponseDescription = infoEntite.findDescription(lang);
+
+                    if (!infoEntite.hasStatement("P56")) {
+                        return "Ce n'est pas une entreprise";
+                    }
+
+                    String ReponseSIREN = infoEntite.findStatement("P56").getValue().toString();
+                    String ReponseSIRET = infoEntite.findStatement("P92").getValue().toString();
+                    String ReponseCP = infoEntite.findDescription(lang);
+                    String ReponseVille = infoEntite.findDescription(lang);
+                    String ReponseCA = infoEntite.findStatement("P134").getValue().toString();
+
+                    String reponse = "[" + label + "] / " + "[" + ReponseLabel + "] / " +
+                     "[" + ReponseDescription + "] / " + "[N°SIREN = " + ReponseSIREN + "] / " +
+                     "[N°SIRET = " + ReponseSIRET + "] / " + "[CA = " + ReponseCA + "] / ";
+
+                    return reponse;
+                } else {
+                    return "L'entité [" + label + "] n'existe pas encore";
+                }
+            } else {
+                return "Arrêtez de tapper n'importe quoi SVP ! Une entité commence par Q";
+            }
+
+        }
+
+    }
+
 
 }

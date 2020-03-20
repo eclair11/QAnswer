@@ -87,9 +87,10 @@ public class AnswerController {
             m.addAttribute("reponseUpdate", "");
             m.addAttribute("reponseTranscription", "");
             m.addAttribute("reponseEntreprise", "");
+            m.addAttribute("reponseDisplayEntreprise", "");
             m.addAttribute("bool", false);
         }
-
+        
         return "bot";
 
     }
@@ -182,7 +183,7 @@ public class AnswerController {
         String CA = b.getCA();
 
         String reponse;
-
+        
         /* opération supplémentaires de tri */
         CA = CA.replaceAll("[^0-9]", "");
         CA = CA.trim();
@@ -347,6 +348,28 @@ public class AnswerController {
             }
             
         }
+
+        return "bot";
+    }
+
+
+
+    /* Transcription d'un code ou d'un label */
+    @PostMapping("/botdisplayentreprise")
+    public String botdisplayentreprise(Model m, Bot b)
+            throws LoginFailedException, MediaWikiApiErrorException, IOException {
+
+        String label = b.getLabel();
+        String code = b.getCode();
+        String lang = b.getLang();
+        boolean type = b.isTranscription();
+
+        String reponse = "";
+
+        reponse = BotInsert.transcritEntiteCodeEntreprise(label, code, lang, type);
+
+        m.addAttribute("reponseDisplayEntreprise", reponse);
+        m.addAttribute("bool", "true");
 
         return "bot";
     }
