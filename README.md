@@ -33,6 +33,8 @@
 		* D8 - Document final de conception
 		* D9 - Diapositives de présentation
 * Ontologie :
+	* Code source de l'ontologie
 	* Dernière version de l'ontologie
 * Planning :
+	* Code source du diagramme de Gantt
 	* Planning du projet
