@@ -1,14 +1,10 @@
-# INTEROPERABILITY
+# QAnswer
 
-Dépôt pour le projet d'interopérabilité
-
-## Membres du projet
-
+**Membres du groupe :**
 * Elias Romdan
 * Nicolas Trotta
 
-## Organisation des dossiers
-
+**Organisation des dossiers :**
 * Back-end :
 	* Code source du projet
 * Demo :
@@ -37,8 +33,6 @@ Dépôt pour le projet d'interopérabilité
 		* D8 - Document final de conception
 		* D9 - Diapositives de présentation
 * Ontologie :
-	* Code source de l'ontologie
 	* Dernière version de l'ontologie
 * Planning :
-	* Code source du diagramme de Gantt
 	* Planning du projet
